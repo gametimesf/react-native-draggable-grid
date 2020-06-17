@@ -29,7 +29,7 @@ export const Block: FunctionComponent<BlockProps> = ({
   return (
     <Animated.View style={[styles.blockContainer, style, dragStartAnimationStyle]} {...panHandlers}>
       <Animated.View>
-        <TouchableWithoutFeedback onPress={onPress} onLongPress={onLongPress}>
+        <TouchableWithoutFeedback delayLongPress={250} onPress={onPress} onLongPress={onLongPress}>
           {children}
         </TouchableWithoutFeedback>
       </Animated.View>
