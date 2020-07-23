@@ -1,3 +1,5 @@
+/** @format */
+
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import {
@@ -36,7 +38,7 @@ export interface IDraggableGridProps<DataType extends IBaseItemType> {
   onResetSort?: (newSortedData: DataType[]) => void
 }
 interface IMap<T> {
-  [key:string]: T
+  [key: string]: T
 }
 interface IPositionOffset {
   x: number
@@ -227,7 +229,7 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
     Animated.timing(items[itemIndex].currentPosition, {
       toValue: blockPositions[orderMap[itemKey].order],
       duration: 200,
-      useNativeDriver: false
+      useNativeDriver: false,
     }).start()
   }
   function getKeyByOrder(order: number) {
@@ -258,7 +260,7 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
       Animated.timing(dragStartAnimatedValue, {
         toValue: 1.1,
         duration: 100,
-        useNativeDriver: false
+        useNativeDriver: false,
       }).start()
     }
   }
@@ -365,8 +367,11 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
   const itemList = items.map((item, itemIndex) => {
     return (
       <Block
-        onPress={onBlockPress.bind(null, itemIndex)}
-        onLongPress={setActiveBlock.bind(null, itemIndex, item.itemData)}
+        onPress={() => {
+          onBlockPress.bind(null, itemIndex)
+          setActiveBlock.bind(null, itemIndex, item.itemData)
+        }}
+        // onLongPress={}
         panHandlers={panResponder.panHandlers}
         style={getBlockStyle(itemIndex)}
         dragStartAnimationStyle={getDragStartAnimation(itemIndex)}
