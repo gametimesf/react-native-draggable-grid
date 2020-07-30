@@ -70,7 +70,7 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
     width: 0,
     height: 0,
   })
-  const [activeItemIndex, setActiveItemIndex] = useState<undefined | number>()
+  const [activeItemIndex, setActiveItemIndex] = useState<undefined | number>(undefined)
 
   const assessGridSize = (event: IOnLayoutEvent) => {
     if (!hadInitBlockSize) {
@@ -97,7 +97,7 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
   })
 
   function initBlockPositions() {
-    items.forEach((item, index) => {
+    items.forEach((_, index) => {
       blockPositions[index] = getBlockPositionByOrder(index)
     })
   }
@@ -120,7 +120,7 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
   function onBlockPress(itemIndex: number) {
     props.onItemPress && props.onItemPress(items[itemIndex].itemData)
   }
-  function onStartDrag(nativeEvent: GestureResponderEvent, gestureState: PanResponderGestureState) {
+  function onStartDrag(_: GestureResponderEvent, gestureState: PanResponderGestureState) {
     const activeItem = getActiveItem()
     if (!activeItem) return false
     props.onDragStart && props.onDragStart(activeItem.itemData)
@@ -140,8 +140,9 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
       x: moveX,
       y: moveY,
     })
+    return true
   }
-  function onHandMove(nativeEvent: GestureResponderEvent, gestureState: PanResponderGestureState) {
+  function onHandMove(_: GestureResponderEvent, gestureState: PanResponderGestureState) {
     const activeItem = getActiveItem()
     if (!activeItem) return false
     const { moveX, moveY } = gestureState
@@ -183,6 +184,7 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
       orderMap[activeItem.key].order = closetOrder
       props.onResetSort && props.onResetSort(getSortData())
     }
+    return true
   }
   function onHandRelease() {
     const activeItem = getActiveItem()
@@ -192,6 +194,7 @@ export const DraggableGrid = function<DataType extends IBaseItemType>(
     activeItem.currentPosition.flattenOffset()
     moveBlockToBlockOrderPosition(activeItem.key)
     setActiveItemIndex(undefined)
+    return true
   }
   function resetBlockPositionByOrder(activeItemOrder: number, insertedPositionOrder: number) {
     let disabledReSortedItemCount = 0
